@@ -3,12 +3,12 @@ from .store import init_default_data
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'your-secure-key-here'
-    
-    # 1. Initialize the JSON files so they aren't missing
+    app.config['SECRET_KEY'] = 'dev-secret-key-123' # Required for sessions/flash
+
+    # Ensure JSON files exist before the app starts
     init_default_data()
 
-    # 2. Register all your blueprints
+    # Register Blueprints
     from .routes import bp as main_bp
     from .auth import bp as auth_bp
     from .admin import bp as admin_bp
