@@ -239,7 +239,8 @@ def checkout():
         flash('Cart empty')
         return redirect(url_for('main.view_cart'))
 
-    items = {i['id']: i for i in load_json(ITEMS_FILE, [])}
+    # Change this line in the checkout() function:
+    items = {i.get('id'): i for i in load_json(ITEMS_FILE, []) if i.get('id')}
 
     cart_details = []
     total = 0
