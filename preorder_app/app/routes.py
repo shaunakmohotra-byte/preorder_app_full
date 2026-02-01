@@ -80,6 +80,56 @@ def add_to_cart():
     flash('Added to cart')
     return redirect(url_for('main.menu'))
 
+@bp.route('/cart/increase', methods=['POST'])
+def cart_increase():
+    user = current_user()
+    if not user:
+        return redirect(url_for('auth.login'))
+
+    item_id = request.form.get('item_id')
+    carts = load_json(CARTS_FILE, {})
+    if not isinstance(carts, dict):
+        carts = {}
+
+    user_id = str(user['id'])
+    user_cart = carts.get(user_id, [])
+
+    for c in user_cart:
+        if str(c.get('item_id')) == str(item_id):
+            c['qty'] += 1
+            break
+
+    carts[user_id] = user_cart
+    save_json(CARTS_FILE, carts)
+    return redirect(url_for('main.view_cart'))
+
+@bp.route('/cart/decrease', methods=['POST'])
+def cart_decrease():
+    user = current_user()
+    if not user:
+        return redirect(url_for('auth.login'))
+
+    item_id = request.form.get('item_id')
+    carts = load_json(CARTS_FILE, {})
+    if not isinstance(carts, dict):
+        carts = {}
+
+    user_id = str(user['id'])
+    user_cart = carts.get(user_id, [])
+
+    for c in user_cart:
+        if str(c.get('item_id')) == str(item_id):
+            c['qty'] -= 1
+            if c['qty'] <= 0:
+                user_cart.remove(c)
+            break
+
+    carts[user_id] = user_cart
+    save_json(CARTS_FILE, carts)
+    return redirect(url_for('main.view_cart'))
+
+
+
 @bp.route('/checkout')
 def checkout():
     user = current_user()
