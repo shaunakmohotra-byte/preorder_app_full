@@ -2,7 +2,7 @@ import os
 from flask import Flask
 def create_app():
     app = Flask(__name__, template_folder='../templates', static_folder='../static')
-    app.secret_key = os.environ.get('PREORDER_SECRET', 'replace-with-secure-key')
+    app.secret_key = os.environ.get('PREORDER_SECRET', 'Shaunak')
     # register blueprints
     from .routes import bp as main_bp
     from .auth import bp as auth_bp
