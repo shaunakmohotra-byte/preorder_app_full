@@ -283,3 +283,65 @@ def mark_order_paid(order_id):
     save_orders(orders)
     flash("Order completed!")
     return redirect(url_for('main.cafeteria'))
+
+
+# -----------------------
+# Authentication Routes
+# -----------------------
+
+@bp.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        users = load_json(USERS_FILE, [])
+
+        # Check if user already exists
+        if any(u['email'] == email for u in users):
+            flash('Email already registered')
+            return redirect(url_for('main.register'))
+
+        # Create new user with hashed password
+        new_user = {
+            'id': str(uuid.uuid4()),
+            'name': name,
+            'email': email,
+            'password': generate_password_hash(password) # Security!
+        }
+
+        users.append(new_user)
+        save_json(USERS_FILE, users)
+
+        flash('Registration successful! Please login.')
+        return redirect(url_for('main.login'))
+
+    return render_template('register.html')
+
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        users = load_json(USERS_FILE, [])
+        user = next((u for u in users if u['email'] == email), None)
+
+        # Verify user exists and password is correct
+        if user and check_password_hash(user['password'], password):
+            session.clear() # Clear old session data
+            session['user_id'] = user['id']
+            flash(f'Welcome back, {user["name"]}!')
+            return redirect(url_for('main.menu'))
+        else:
+            flash('Invalid email or password')
+            return redirect(url_for('main.login'))
+
+    return render_template('login.html')
+
+@bp.route('/logout')
+def logout():
+    session.clear()
+    flash('You have been logged out')
+    return redirect(url_for('main.menu'))
