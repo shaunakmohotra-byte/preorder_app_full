@@ -26,37 +26,47 @@ def view_cart():
         flash('Please login to view cart')
         return redirect(url_for('auth.login'))
 
-    # Load data safely
+    # Load carts safely
     carts = load_json(CARTS_FILE, {})
-    # If carts is accidentally a list, reset it to a dict
-    if not isinstance(carts, dict): carts = {}
-    
-    all_items = load_json(ITEMS_FILE, [])
-    items_map = {str(i.get('id')): i for i in all_items if i.get('id')}
-    
-    # Safely get user ID and their cart
-    user_id = str(user.get('id', ''))
+    if not isinstance(carts, dict):
+        carts = {}
+
+    # Load all items
+    items = load_json(ITEMS_FILE, [])
+    items_map = {str(i['id']): i for i in items if 'id' in i}
+
+    user_id = str(user['id'])
     user_cart = carts.get(user_id, [])
 
     cart_details = []
     total = 0
-    
-    for c in user_cart:
-        item_id = str(c.get('item_id', ''))
-        it = items_map.get(item_id)
-        
-        if it:
-            qty = c.get('qty', 0)
-            price = it.get('price', 0)
-            subtotal = price * qty
-            total += subtotal
-            cart_details.append({
-                'item': it, 
-                'qty': qty, 
-                'subtotal': subtotal
-            })
 
-    return render_template('cart.html', cart_details=cart_details, total=total, user=user)
+    for c in user_cart:
+        item_id = str(c.get('item_id'))
+        qty = int(c.get('qty', 0))
+
+        item = items_map.get(item_id)
+        if not item or qty <= 0:
+            continue
+
+        price = int(item.get('price', 0))
+        subtotal = price * qty
+        total += subtotal
+
+        cart_details.append({
+            'item_id': item_id,
+            'name': item.get('name', 'Unknown Item'),
+            'qty': qty,
+            'subtotal': subtotal
+        })
+
+    return render_template(
+        'cart.html',
+        cart_details=cart_details,
+        total=total,
+        user=user
+    )
+
 @bp.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
     user = current_user()
