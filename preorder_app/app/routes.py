@@ -308,7 +308,8 @@ def register():
             'id': str(uuid.uuid4()),
             'name': name,
             'email': email,
-            'password': generate_password_hash(password) # Security!
+            'password': gen
+            erate_password_hash(password) # Security!
         }
 
         users.append(new_user)
@@ -318,27 +319,6 @@ def register():
         return redirect(url_for('main.login'))
 
     return render_template('register.html')
-
-@bp.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
-
-        users = load_json(USERS_FILE, [])
-        user = next((u for u in users if u['email'] == email), None)
-
-        # Verify user exists and password is correct
-        if user and check_password_hash(user['password'], password):
-            session.clear() # Clear old session data
-            session['user_id'] = user['id']
-            flash(f'Welcome back, {user["name"]}!')
-            return redirect(url_for('main.menu'))
-        else:
-            flash('Invalid email or password')
-            return redirect(url_for('main.login'))
-
-    return render_template('login.html')
 
 @bp.route('/logout')
 def logout():
