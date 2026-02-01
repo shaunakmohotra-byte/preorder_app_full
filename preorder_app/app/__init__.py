@@ -1,9 +1,15 @@
 from flask import Flask
 from .store import init_default_data
 
+import os
+from flask import Flask
 def create_app():
-    app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'dev-secret-key-123' # Required for sessions/flash
+    # Tell Flask the template folder is one level up from this file
+    template_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'templates'))
+    
+    app = Flask(__name__, template_folder=template_dir)
+    
+    app.config['SECRET_KEY'] = 'dev-secret-key-123'
 
     # Ensure JSON files exist before the app starts
     init_default_data()
