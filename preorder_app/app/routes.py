@@ -308,8 +308,8 @@ def register():
             'id': str(uuid.uuid4()),
             'name': name,
             'email': email,
-            'password': generate_password_hash(password)
-            erate_password_hash(password) # Security!
+            'password': generate_password_hash(password),
+            generate_password_hash(password) # Security!
         }
 
         users.append(new_user)
