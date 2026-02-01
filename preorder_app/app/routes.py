@@ -230,7 +230,7 @@ def checkout():
     user = current_user()
     if not user:
         flash('Login to checkout')
-        return redirect(url_for('auth.login'))
+        return redirect(url_for('main.login'))
 
     carts = load_json(CARTS_FILE, {})
     user_cart = carts.get(user['id'], [])
