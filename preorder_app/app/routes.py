@@ -247,12 +247,14 @@ def checkout():
 
     for c in user_cart:
         it = items.get(c['item_id'])
-        if not it:
+        # Check if item exists AND has a price
+        if not it or 'price' not in it:
             continue
+            
         subtotal = it['price'] * c['qty']
         total += subtotal
         cart_details.append({
-            'name': it['name'],
+            'name': it.get('name', 'Unknown Item'), # Use .get for safety
             'price': it['price'],
             'qty': c['qty'],
             'subtotal': subtotal
