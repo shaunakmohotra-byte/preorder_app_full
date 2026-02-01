@@ -16,8 +16,8 @@ bp = Blueprint('main', __name__)
 # REPLACE these with your actual details or use environment variables
 SMTP_SERVER = os.environ.get('SMTP_SERVER', 'smtp.gmail.com')
 SMTP_PORT = int(os.environ.get('SMTP_PORT', 587))
-SMTP_EMAIL = os.environ.get('SMTP_EMAIL', 'your_email@example.com')
-SMTP_PASSWORD = os.environ.get('SMTP_PASSWORD', 'your_app_password') 
+SMTP_EMAIL = os.environ.get('SMTP_EMAIL', 'preorder.apptis@gmail.com')
+SMTP_PASSWORD = os.environ.get('SMTP_PASSWORD', 'bzmf ugav dbcy podq') 
 
 # -----------------------
 # Helper Functions
