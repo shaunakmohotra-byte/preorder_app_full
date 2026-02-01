@@ -83,23 +83,49 @@ def add_to_cart():
 @bp.route('/checkout')
 def checkout():
     user = current_user()
-    if not user: return redirect(url_for('auth.login'))
-    
+    if not user:
+        flash('Please login to checkout')
+        return redirect(url_for('auth.login'))
+
+    # Load data safely
     carts = load_json(CARTS_FILE, {})
-    user_cart = carts.get(str(user['id']), [])
-    if not user_cart: return redirect(url_for('main.menu'))
+    if not isinstance(carts, dict): carts = {}
+    
+    all_items = load_json(ITEMS_FILE, [])
+    # Map items by ID for quick lookup
+    items_map = {str(i.get('id')): i for i in all_items if i.get('id')}
+    
+    user_id = str(user.get('id', ''))
+    user_cart = carts.get(user_id, [])
 
-    items_map = {i.get('id'): i for i in load_json(ITEMS_FILE, []) if i.get('id')}
-    cart_details = []
+    if not user_cart:
+        flash('Your cart is empty')
+        return redirect(url_for('main.menu'))
+
+    checkout_details = []
     total = 0
+    
     for c in user_cart:
-        it = items_map.get(c['item_id'])
+        item_id = str(c.get('item_id', ''))
+        it = items_map.get(item_id)
+        
         if it:
-            subtotal = it['price'] * c['qty']
+            qty = c.get('qty', 0)
+            price = it.get('price', 0)
+            subtotal = price * qty
             total += subtotal
-            cart_details.append({'name': it['name'], 'qty': c['qty'], 'subtotal': subtotal})
+            # We flatten the structure here for easier use in checkout.html
+            checkout_details.append({
+                'name': it.get('name', 'Unknown Item'),
+                'price': price,
+                'qty': qty,
+                'subtotal': subtotal
+            })
 
-    return render_template("checkout.html", cart_details=cart_details, total=total, user=user)
+    return render_template("checkout.html", 
+                           cart_details=checkout_details, 
+                           total=total, 
+                           user=user)
 
 @bp.route('/pay_now', methods=['POST'])
 def pay_now():
