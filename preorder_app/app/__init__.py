@@ -7,9 +7,9 @@ def create_app():
     template_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'templates'))
     base_dir = os.path.dirname(os.path.abspath(__file__))
     static_dir = os.path.abspath(os.path.join(base_dir, '..', 'static'))
-    app = Flask(__name__, template_folder=template_dir)    
+    app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)    
     app.config['SECRET_KEY'] = 'dev-secret-key-123'
-
+   
     # Ensure JSON files exist before the app starts
     init_default_data()
 
