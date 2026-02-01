@@ -321,7 +321,7 @@ def pay_now():
 
     flash("Payment successful. Confirmation email sent.")
     return redirect(url_for('main.menu'))
-
+#temp
     print("PAY_NOW CALLED")
 
 db_user = get_user_by_id(user["id"])
