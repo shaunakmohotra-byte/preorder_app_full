@@ -12,18 +12,18 @@
 
     {% for c in cart_details %}
     <tr>
-        <td>{{ c.item.name }}</td>
+        <td>{{ c.name }}</td>
 
         <td>
             <form action="{{ url_for('main.cart_decrease') }}" method="POST" style="display:inline;">
-                <input type="hidden" name="item_id" value="{{ c.item.id }}">
+                <input type="hidden" name="item_id" value="{{ c.item_id }}">
                 <button type="submit">−</button>
             </form>
 
             {{ c.qty }}
 
             <form action="{{ url_for('main.cart_increase') }}" method="POST" style="display:inline;">
-                <input type="hidden" name="item_id" value="{{ c.item.id }}">
+                <input type="hidden" name="item_id" value="{{ c.item_id }}">
                 <button type="submit">+</button>
             </form>
         </td>
@@ -32,14 +32,13 @@
 
         <td>
             <form action="{{ url_for('main.remove_from_cart') }}" method="POST">
-                <input type="hidden" name="item_id" value="{{ c.item.id }}">
+                <input type="hidden" name="item_id" value="{{ c.item_id }}">
                 <button type="submit">Remove</button>
             </form>
         </td>
     </tr>
     {% endfor %}
 </table>
-
 
 <h3>Total: ₹{{ total }}</h3>
 
@@ -48,5 +47,3 @@
 </form>
 
 {% endblock %}
-
-
