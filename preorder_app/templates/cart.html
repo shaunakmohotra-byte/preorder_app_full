@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Your Cart</h2>
+
+<table>
+    <tr>
+        <th>Item</th>
+        <th>Qty</th>
+        <th>Subtotal</th>
+        <th>Action</th>
+    </tr>
+
+    {% for c in cart_details %}
+    <tr>
+        <td>{{ c.item.name }}</td>
+
+        <td>
+            <form action="{{ url_for('main.cart_decrease') }}" method="POST" style="display:inline;">
+                <input type="hidden" name="item_id" value="{{ c.item.id }}">
+                <button type="submit">−</button>
+            </form>
+
+            {{ c.qty }}
+
+            <form action="{{ url_for('main.cart_increase') }}" method="POST" style="display:inline;">
+                <input type="hidden" name="item_id" value="{{ c.item.id }}">
+                <button type="submit">+</button>
+            </form>
+        </td>
+
+        <td>₹{{ c.subtotal }}</td>
+
+        <td>
+            <form action="{{ url_for('main.remove_from_cart') }}" method="POST">
+                <input type="hidden" name="item_id" value="{{ c.item.id }}">
+                <button type="submit">Remove</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>Total: ₹{{ total }}</h3>
+
+<form action="{{ url_for('main.checkout') }}" method="POST">
+    <button type="submit">Proceed to pay</button>
+</form>
+
+
+{% endblock %}
+

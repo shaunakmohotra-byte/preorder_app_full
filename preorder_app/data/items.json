@@ -1,0 +1,17 @@
+[
+  {
+    "id": "item1",
+    "name": "Veg Burger",
+    "price": 70
+  },
+  {
+    "id": "item2",
+    "name": "Chicken Sandwich",
+    "price": 120
+  },
+  {
+    "id": "item3",
+    "name": "Coffee",
+    "price": 40
+  }
+]

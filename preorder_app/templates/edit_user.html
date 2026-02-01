@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Edit User</h2>
+
+<form method="POST">
+    <label>Username:</label><br>
+    <input type="text" name="username" value="{{ user.username }}" required>
+    <br><br>
+
+    <label>Email:</label><br>
+    <input type="email" name="email" value="{{ user.email }}" required>
+    <br><br>
+
+    <label>
+        <input type="checkbox" name="is_admin"
+               {% if user.is_admin %}checked{% endif %}>
+        Admin User
+    </label>
+    <br><br>
+
+    <button type="submit">Save Changes</button>
+    <a href="{{ url_for('admin.index') }}">
+        <button type="button">Cancel</button>
+    </a>
+</form>
+{% endblock %}

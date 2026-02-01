@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Mock Transaction Page</h2>
+
+<ul>
+    {% for c in cart_details %}
+        <li>{{ c.name }} × {{ c.qty }} = ₹{{ c.subtotal }}</li>
+    {% endfor %}
+</ul>
+
+<h3>Total: ₹{{ total }}</h3>
+
+<form method="post" action="{{ url_for('main.pay_now') }}">
+    <button type="submit">Pay Now</button>
+</form>
+{% endblock %}

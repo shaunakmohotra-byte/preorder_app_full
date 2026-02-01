@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Menu</h2>
+
+<div class="grid">
+{% for it in items %}
+  <div class="card">
+      <h3>{{ it.name }}</h3>
+      <div class="price">₹{{ it.price }}</div>
+
+      <form method="post" action="{{ url_for('main.add_to_cart') }}">
+          <input type="hidden" name="item_id" value="{{ it.id }}">
+          Qty:
+          <input name="qty" type="number" value="1" min="1" style="width:60px">
+          <br><br>
+          <button class="btn">Add</button>
+      </form>
+  </div>
+{% endfor %}
+</div>
+{% endblock %}
