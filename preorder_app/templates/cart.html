@@ -40,6 +40,13 @@
     {% endfor %}
 </table>
 
+
 <h3>Total: ₹{{ total }}</h3>
+
+<form action="{{ url_for('main.checkout') }}" method="GET">
+    <button type="submit">Proceed to Checkout</button>
+</form>
+
+{% endblock %}
 
 
