@@ -261,88 +261,28 @@ def checkout():
         user=user
     )
 
-@bp.route('/pay_now', methods=['POST'])
-def pay_now():
-    user = current_user()
-    if not user:
-        return redirect(url_for('auth.login'))
+def send_order_email(user_email, user_name, order):
+    # ... (Keep your existing message setup code) ...
+    
+    msg.set_content(body)
 
-    carts = load_json(CARTS_FILE, {})
-    user_cart = carts.get(user['id'], [])
-
-    if not user_cart:
-        flash("Cart empty")
-        return redirect(url_for('main.menu'))
-
-    items = {i['id']: i for i in load_json(ITEMS_FILE, [])}
-
-    order_items = []
-    total = 0
-
-    for c in user_cart:
-        it = items.get(c['item_id'])
-        if not it:
-            continue
-        order_items.append({
-            'item_id': it['id'],
-            'name': it['name'],
-            'price': it['price'],
-            'qty': c['qty']
-        })
-        total += it['price'] * c['qty']
-
-    # Create Order Object
-    order = {
-        'id': str(uuid.uuid4()),
-        'user_id': user['id'],
-        'user_name': user['name'],
-        'items': order_items,
-        'total': total,
-        'status': 'paid',
-        'created_at': datetime.datetime.utcnow().isoformat()
-    }
-
-    # Save Order
-    orders = load_orders()
-    orders.append(order)
-    save_orders(orders)
-
-    # Empty Cart
-    carts[user['id']] = []
-    save_json(CARTS_FILE, carts)
-
-    # --- EMAIL SENDING LOGIC ---
-    if user.get("email"):
-        try:
-            print("Attempting to send email...")
-            send_order_email(
-                user_email=user["email"],
-                user_name=user["name"],
-                order=order
-            )
-        except Exception as e:
-            # We log the error but do NOT crash the application
-            # so the user still sees "Payment successful"
-            print("SMTP email failed:", e)
-    else:
-        print("No email address found for user.")
-    # ---------------------------
-
-    flash("Payment successful. Confirmation email sent.")
-    return redirect(url_for('main.menu'))
-
-db_user = get_user_by_id(user["id"])
-
-if db_user and db_user.get("email"):
+    print(f"Connecting to SMTP server: {SMTP_SERVER}:{SMTP_PORT}...")
+    
+    # --- UPDATED CODE BLOCK ---
     try:
-        send_order_email(
-            user_email=db_user["email"],
-            user_name=db_user["name"],
-            order=order
-        )
+        # We add timeout=10 so it doesn't hang forever
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=10) as server:
+            # server.set_debuglevel(1)  # Uncomment this line if you need deep debugging logs
+            server.starttls()
+            server.login(SMTP_EMAIL, SMTP_PASSWORD)
+            server.send_message(msg)
+            print(f"Email sent successfully to {user_email}")
+            
     except Exception as e:
-        print("EMAIL FAILED:", e)
-
+        # This catch block will now actually work because we set a timeout
+        print(f"FAILED to send email: {e}")
+        # We do NOT raise the error again, so the user's checkout flow finishes successfully.
+    # --------------------------
 
 
 @bp.route('/cafeteria')
