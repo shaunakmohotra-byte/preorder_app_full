@@ -201,7 +201,7 @@ def checkout():
                            total=total, 
                            user=user)
 
-from .email_utils import send_order_email
+
 
 @bp.route('/pay_now', methods=['POST'])
 def pay_now():
