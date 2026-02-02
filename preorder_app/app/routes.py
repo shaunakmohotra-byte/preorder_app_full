@@ -262,11 +262,20 @@ Total: ₹{total}
 Thank you for ordering!
 """
 
-    send_order_email(
-        to_email=user["email"],
-        subject="Your Order Receipt",
-        body=email_body
-    )
+   # send email in background
+threading.Thread(
+    target=send_order_email,
+    args=(
+        user["email"],
+        "Your Order Receipt",
+        email_body
+    ),
+    daemon=True
+).start()
+
+flash("Payment successful! Receipt will be emailed shortly.")
+return redirect(url_for('main.menu'))
+
 
     flash("Payment successful! Receipt sent to email.")
     return redirect(url_for('main.menu'))
