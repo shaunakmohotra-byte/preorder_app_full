@@ -249,8 +249,7 @@ def pay_now():
     save_json(CARTS_FILE, carts)
 
     # EMAIL CONTENT
-    email_body = f"""
-    Hi {user['username']},
+    email_body = f"""Hi {user['username']},
 
 Your order has been placed successfully!
 
@@ -262,16 +261,13 @@ Total: ₹{total}
 Thank you for ordering!
 """
 
-   # send email in background
+    # send email in background
     threading.Thread(
         target=send_order_email,
-        args=(
-            user["email"],
-            "Your Order Receipt",
-            email_body
-        ),
+        args=(user["email"], "Your Order Receipt", email_body),
         daemon=True
     ).start()
 
     flash("Payment successful! Receipt will be emailed shortly.")
     return redirect(url_for('main.menu'))
+
