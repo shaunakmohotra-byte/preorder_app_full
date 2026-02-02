@@ -4,8 +4,8 @@ from email.mime.multipart import MIMEMultipart
 
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587  # TLS port
-EMAIL_ADDRESS = "yourprojectemail@gmail.com"
-EMAIL_PASSWORD = "YOUR_APP_PASSWORD"  # Gmail App Password
+EMAIL_ADDRESS = "preorder.apptis@gmail.com"
+EMAIL_PASSWORD = "bzmf ugav dbcy podq"  # Gmail App Password
 
 def send_order_email(to_email, subject, body):
     try:
