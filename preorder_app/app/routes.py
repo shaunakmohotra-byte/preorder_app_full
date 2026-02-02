@@ -1,6 +1,8 @@
 import os, datetime, uuid, threading
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from .store import load_json, save_json, ITEMS_FILE, CARTS_FILE, ORDERS_FILE, USERS_FILE
+from app.utils.pdf_invoice import generate_invoice_pdf
+from flask import send_file
 
 bp = Blueprint('main', __name__)
 
@@ -234,9 +236,10 @@ def pay_now():
         })
 
     # Save order
+    order_id = str(uuid.uuid4())[:8]
     orders = load_json(ORDERS_FILE, [])
     orders.append({
-        "id": str(uuid.uuid4())[:8],
+        "id": order_id,
         "user_name": user["username"],
         "items": order_items,
         "total": total,
@@ -248,26 +251,20 @@ def pay_now():
     carts[user_id] = []
     save_json(CARTS_FILE, carts)
 
-    # EMAIL CONTENT
-    email_body = f"""Hi {user['username']},
+    # Generate PDF e-bill
+    from app.utils.pdf_invoice import generate_invoice_pdf
+    pdf_path = generate_invoice_pdf(
+        order_id=order_id,
+        user=user,
+        order_items=order_items,
+        total=total
+    )
 
-Your order has been placed successfully!
+    flash("Payment successful! Your e-bill is downloading.")
+    return send_file(
+        pdf_path,
+        as_attachment=True,
+        download_name=f"invoice_{order_id}.pdf"
+    )
 
-Order Items:
-""" + "\n".join([f"- {i['qty']} × {i['name']}" for i in order_items]) + f"""
-
-Total: ₹{total}
-
-Thank you for ordering!
-"""
-
-    # send email in background
-    threading.Thread(
-        target=send_order_email,
-        args=(user["email"], "Your Order Receipt", email_body),
-        daemon=True
-    ).start()
-
-    flash("Payment successful! Receipt will be emailed shortly.")
-    return redirect(url_for('main.menu'))
 
