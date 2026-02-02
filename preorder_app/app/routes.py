@@ -207,40 +207,61 @@ def checkout():
 def pay_now():
     user = current_user()
     if not user:
+        flash("Please login first")
         return redirect(url_for('auth.login'))
 
     carts = load_json(CARTS_FILE, {})
     items = load_json(ITEMS_FILE, [])
-    items_map = {str(i["id"]): i for i in items}
 
-    user_id = str(user["id"])
+    if not isinstance(carts, dict):
+        carts = {}
+
+    items_map = {str(i.get("id")): i for i in items}
+
+    user_id = str(user.get("id"))
     user_cart = carts.get(user_id, [])
 
     if not user_cart:
-        flash("Cart empty")
+        flash("Your cart is empty")
         return redirect(url_for('main.menu'))
 
     order_items = []
     total = 0
 
     for c in user_cart:
-        item = items_map.get(str(c["item_id"]))
-        if not item:
+        item_id = str(c.get("item_id"))
+        qty = int(c.get("qty", 0))
+
+        item = items_map.get(item_id)
+        if not item or qty <= 0:
             continue
-        qty = c["qty"]
-        subtotal = item["price"] * qty
+
+        price = int(item.get("price", 0))
+        subtotal = price * qty
         total += subtotal
+
         order_items.append({
-            "name": item["name"],
+            "name": item.get("name", "Unknown"),
             "qty": qty
         })
 
+    if not order_items:
+        flash("Order could not be processed")
+        return redirect(url_for("main.menu"))
+
+    # SAFE user display name
+    display_name = (
+        user.get("username")
+        or user.get("name")
+        or user.get("email")
+        or "User"
+    )
+
     # Save order
-    order_id = str(uuid.uuid4())[:8]
     orders = load_json(ORDERS_FILE, [])
     orders.append({
-        "id": order_id,
-        "user_name": user["username"],
+        "id": str(uuid.uuid4())[:8],
+        "user_name": display_name,
         "items": order_items,
         "total": total,
         "status": "Paid"
@@ -251,20 +272,7 @@ def pay_now():
     carts[user_id] = []
     save_json(CARTS_FILE, carts)
 
-    # Generate PDF e-bill
-    from app.utils.pdf_invoice import generate_invoice_pdf
-    pdf_path = generate_invoice_pdf(
-        order_id=order_id,
-        user=user,
-        order_items=order_items,
-        total=total
-    )
-
-    flash("Payment successful! Your e-bill is downloading.")
-    return send_file(
-        pdf_path,
-        as_attachment=True,
-        download_name=f"invoice_{order_id}.pdf"
-    )
+    flash("✅ Payment successful! Order placed.")
+    return redirect(url_for('main.menu'))
 
 
