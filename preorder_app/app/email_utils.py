@@ -12,7 +12,7 @@ def send_order_email(to_email, subject, body):
         # Create email message
         msg = MIMEMultipart()
         msg["From"] = preorder.apptis@gmail.com
-        msg["To"] = to_email
+        msg["To"] = EMAIL_ADDRESS
         msg["Subject"] = subject
         msg.attach(MIMEText(body, "plain"))
 
