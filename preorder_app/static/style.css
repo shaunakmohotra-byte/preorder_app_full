@@ -261,7 +261,7 @@ td form {
     object-fit: contain;
 }
 
-<style>
+
 #flash-messages {
     position: fixed;
     top: 20px;
@@ -279,4 +279,3 @@ td form {
     opacity: 1;
     transition: opacity 0.5s ease;
 }
-</style>
