@@ -205,6 +205,10 @@ def checkout():
 
 @bp.route('/pay_now', methods=['POST'])
 def pay_now():
+    from utils.pdf_invoice import generate_invoice
+    from flask import send_file
+    import os, uuid
+
     user = current_user()
     if not user:
         flash("Please login first")
@@ -249,7 +253,6 @@ def pay_now():
         flash("Order could not be processed")
         return redirect(url_for("main.menu"))
 
-    # SAFE user display name
     display_name = (
         user.get("username")
         or user.get("name")
@@ -257,22 +260,38 @@ def pay_now():
         or "User"
     )
 
-    # Save order
-    orders = load_json(ORDERS_FILE, [])
-    orders.append({
+    # ORDER OBJECT
+    order = {
         "id": str(uuid.uuid4())[:8],
         "user_name": display_name,
         "items": order_items,
         "total": total,
         "status": "Paid"
-    })
+    }
+
+    # Save order
+    orders = load_json(ORDERS_FILE, [])
+    orders.append(order)
     save_json(ORDERS_FILE, orders)
 
     # Clear cart
     carts[user_id] = []
     save_json(CARTS_FILE, carts)
 
-    flash("✅ Payment successful! Order placed.")
-    return redirect(url_for('main.menu'))
+    # ===== PDF GENERATION =====
+    invoice_dir = "invoices"
+    os.makedirs(invoice_dir, exist_ok=True)
+
+    pdf_path = os.path.join(
+        invoice_dir, f"invoice_{order['id']}.pdf"
+    )
+
+    generate_invoice(order, pdf_path)
+
+    return send_file(
+        pdf_path,
+        as_attachment=True,
+        download_name=f"invoice_{order['id']}.pdf"
+    )
 
 
