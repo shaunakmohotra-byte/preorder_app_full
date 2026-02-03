@@ -21,7 +21,7 @@ def generate_invoice_pdf(order_id, user, order_items, total):
     # =================================================
     header_color = HexColor("#1F2937")  # dark slate
     c.setFillColor(header_color)
-    c.rect(0, height - 3.2 * cm, width, 3.2 * cm, fill=1, stroke=0)
+    c.rect(0, height - 3.2 * cm, width, 4.0 * cm, fill=1, stroke=0)
 
     c.setFillColor(white)
     c.setFont("Times-Bold", 22)
@@ -80,9 +80,9 @@ def generate_invoice_pdf(order_id, user, order_items, total):
         subtotal = qty * price
 
         c.drawString(2 * cm, y, name)
-        c.drawRightString(11 * cm, y, f"₹ {price}")
+        c.drawRightString(11 * cm, y, f"Rs {price}")
         c.drawRightString(14 * cm, y, str(qty))
-        c.drawRightString(18 * cm, y, f"₹ {subtotal}")
+        c.drawRightString(18 * cm, y, f"Rs {subtotal}")
 
         y -= 0.65 * cm
 
@@ -101,7 +101,7 @@ def generate_invoice_pdf(order_id, user, order_items, total):
     y -= 0.9 * cm
     c.setFont("Times-Bold", 14)
     c.drawRightString(14 * cm, y, "TOTAL PAYABLE")
-    c.drawRightString(18 * cm, y, f"₹ {total}")
+    c.drawRightString(18 * cm, y, f"Rs {total}")
 
     # =================================================
     # FOOTER
