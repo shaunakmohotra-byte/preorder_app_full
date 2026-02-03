@@ -286,6 +286,13 @@ def pay_now():
         download_name=f"invoice_{order_id}.pdf"
     )
 
+    # ⏩ Auto redirect to menu after 2 seconds
+    response.headers["Refresh"] = "2; url=" + url_for("main.menu")
+
+    flash("Payment successful! Invoice downloaded.")
+
+    return response
+
 @bp.route('/cafeteria')
 def cafeteria():
     user = current_user()
