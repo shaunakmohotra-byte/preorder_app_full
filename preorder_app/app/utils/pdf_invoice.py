@@ -87,7 +87,7 @@ def generate_invoice_pdf(order_id, user, order_items, total):
     y -= 0.8 * cm
     c.setFont("Helvetica-Bold", 13)
     c.drawRightString(13 * cm, y, "TOTAL:")
-    c.drawRightString(18 * cm, y, f"₹ {total}")
+    c.drawRightString(18 * cm, y, f"Rs.{total}")
 
     # -------------------------------------------------
     # FOOTER
