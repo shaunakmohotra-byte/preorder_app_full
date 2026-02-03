@@ -260,6 +260,7 @@ def pay_now():
         "user_name": user.get("username", user.get("email")),
         "items": order_items,
         "total": total,
+        "price": price,
         "status": "Paid"
     })
     save_json(ORDERS_FILE, orders)
