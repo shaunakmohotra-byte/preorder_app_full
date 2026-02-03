@@ -263,7 +263,7 @@ def pay_now():
         "user_name": user.get("username") or user.get("email"),
         "items": order_items,
         "total": total,
-        "status": "Paid"
+        "status": "Paid",
         "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     })
     save_json(ORDERS_FILE, orders)
