@@ -239,12 +239,15 @@ def pay_now():
         if not item or qty <= 0:
             continue
 
-        subtotal = item.get("price", 0) * qty
+        price = int(item.get("price", 0))
+        subtotal = price * qty
         total += subtotal
 
         order_items.append({
             "name": item.get("name", "Unknown"),
-            "qty": qty
+            "qty": qty,
+            "price": price,
+            "subtotal": subtotal
         })
 
     if not order_items:
@@ -253,26 +256,22 @@ def pay_now():
 
     order_id = str(uuid.uuid4())[:8]
 
-    # SAVE ORDER
+    # -------- SAVE ORDER ----------
     orders = load_json(ORDERS_FILE, [])
     orders.append({
         "id": order_id,
-        "user_name": user.get("username", user.get("email")),
+        "user_name": user.get("username") or user.get("email"),
         "items": order_items,
         "total": total,
-        "price": price,
         "status": "Paid"
     })
     save_json(ORDERS_FILE, orders)
 
-    # CLEAR CART
+    # -------- CLEAR CART ----------
     carts[user_id] = []
     save_json(CARTS_FILE, carts)
 
-    # ===== GENERATE PDF =====
-    invoice_dir = "invoices"
-    os.makedirs(invoice_dir, exist_ok=True)
-
+    # -------- GENERATE PDF --------
     pdf_path = generate_invoice_pdf(
         order_id=order_id,
         user=user,
