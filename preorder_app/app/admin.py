@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from .store import load_json, save_json, ITEMS_FILE, USERS_FILE, ORDERS_FILE
 import uuid
+from collections import Counter
+from datetime import datetime
 
 bp = Blueprint('admin', __name__)
 
@@ -99,3 +101,47 @@ def delete_user():
     save_json(USERS_FILE, users)
     flash('User deleted')
     return redirect(url_for('admin.index'))
+
+@admin_bp.route('/dashboard')
+def dashboard():
+    users = load_json(USERS_FILE, [])
+    orders = load_json(ORDERS_FILE, [])
+    items = load_json(ITEMS_FILE, [])
+
+    # -------- BASIC METRICS --------
+    total_users = len(users)
+    total_orders = len(orders)
+    total_revenue = sum(o.get("total", 0) for o in orders)
+
+    # -------- MOST ORDERED ITEM --------
+    item_counter = Counter()
+    for o in orders:
+        for it in o.get("items", []):
+            item_counter[it["name"]] += it["qty"]
+
+    most_ordered_item = (
+        item_counter.most_common(1)[0]
+        if item_counter else ("None", 0)
+    )
+
+    # -------- ORDERS PER DAY --------
+    orders_by_date = Counter()
+    for o in orders:
+        date = o.get("created_at")
+        if date:
+            day = date.split(" ")[0]
+            orders_by_date[day] += 1
+
+    return render_template(
+        "admin_dashboard.html",
+        users=users,
+        items=items,
+        orders=orders,
+
+        # analytics
+        total_users=total_users,
+        total_orders=total_orders,
+        total_revenue=total_revenue,
+        most_ordered_item=most_ordered_item,
+        orders_by_date=dict(orders_by_date)
+    )
