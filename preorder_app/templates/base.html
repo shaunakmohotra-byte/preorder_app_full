@@ -20,6 +20,38 @@
 
 <body>
 
+<!-- Drawer Toggle Button -->
+<button class="menu-btn" onclick="toggleDrawer()">☰</button>
+
+<!-- Drawer Sidebar -->
+<div id="drawer" class="drawer">
+
+    <div class="drawer-header">
+        <h2>Cafeteria</h2>
+        <button class="close-btn" onclick="toggleDrawer()">×</button>
+    </div>
+
+    <nav class="drawer-links">
+        <a href="{{ url_for('main.menu') }}">Menu</a>
+        <a href="{{ url_for('main.view_cart') }}">My Cart</a>
+
+        {% if user and user.is_admin %}
+            <a href="{{ url_for('admin.index') }}">Admin Dashboard</a>
+        {% endif %}
+    </nav>
+
+    <div class="drawer-footer">
+        {% if user %}
+            <span>Hello, {{ user.name }}</span>
+            <a href="{{ url_for('auth.logout') }}" class="logout-btn">Logout</a>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}">Login</a>
+            <a href="{{ url_for('auth.register') }}">Register</a>
+        {% endif %}
+    </div>
+
+</div>
+    
 <!-- Flash Messages -->
 <div id="flash-messages">
     {% with messages = get_flashed_messages() %}
