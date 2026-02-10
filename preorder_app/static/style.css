@@ -407,3 +407,64 @@ td form {
 * {
     font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
+
+/* ===== Mobile Side Navigation ===== */
+.menu-btn {
+    display: none;
+}
+
+.side-nav {
+    display: none;
+}
+
+@media (max-width: 768px) {
+
+    .menu-btn {
+        display: block;
+        position: fixed;
+        top: 18px;
+        left: 16px;
+        font-size: 22px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 1001;
+        color: #282c3f;
+    }
+
+    .side-nav {
+        display: block;
+        height: 100%;
+        width: 260px;
+        position: fixed;
+        top: 0;
+        left: -260px;
+        background-color: white;
+        box-shadow: 2px 0 12px rgba(0,0,0,0.15);
+        padding-top: 60px;
+        transition: left 0.3s ease;
+        z-index: 1000;
+    }
+
+    .side-nav a {
+        display: block;
+        padding: 14px 20px;
+        text-decoration: none;
+        font-weight: 600;
+        color: #282c3f;
+        border-bottom: 1px solid #eee;
+    }
+
+    .side-nav a:hover {
+        background-color: #fdf2e9;
+        color: #fc8019;
+    }
+
+    .side-nav .close-btn {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        font-size: 28px;
+        border-bottom: none;
+    }
+}
