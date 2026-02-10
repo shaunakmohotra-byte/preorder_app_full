@@ -20,45 +20,36 @@
 
 <body>
 
-<!-- ☰ Drawer Toggle Button (mobile only) -->
-<button class="menu-btn" onclick="toggleDrawer()">☰</button>
+<!-- Flash Messages -->
+<div id="flash-messages">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="flash-msg auto-hide">{{ msg }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
 
-<!-- Drawer Sidebar -->
-<div id="drawer" class="drawer">
-
-    <div class="drawer-header">
-        <h2>Cafeteria</h2>
-        <button class="close-btn" onclick="toggleDrawer()">×</button>
-    </div>
-
-    <nav class="drawer-links">
-        <a href="{{ url_for('main.menu') }}">🍽 Menu</a>
-        <a href="{{ url_for('main.view_cart') }}">🛒 My Cart</a>
+<!-- TOP NAVBAR (WORKING VERSION) -->
+<div class="navbar">
+    <h1>Cafeteria</h1>
+    <div class="nav-links">
+        <a href="{{ url_for('main.menu') }}">Menu</a>
+        <a href="{{ url_for('main.view_cart') }}">My Cart</a>
 
         {% if user and user.is_admin %}
-            <a href="{{ url_for('admin.index') }}">🛠 Admin</a>
+            <a href="{{ url_for('admin.index') }}">Admin</a>
         {% endif %}
-    </nav>
 
-    <div class="drawer-footer">
         {% if user %}
             <span>Hello, {{ user.name }}</span>
-            <a href="{{ url_for('auth.logout') }}" class="logout-btn">Logout</a>
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
         {% else %}
             <a href="{{ url_for('auth.login') }}">Login</a>
             <a href="{{ url_for('auth.register') }}">Register</a>
         {% endif %}
     </div>
-
-</div>
-
-<!-- Flash Messages -->
-<div id="flash-messages">
-    {% with messages = get_flashed_messages() %}
-        {% for msg in messages %}
-            <div class="flash-msg auto-hide">{{ msg }}</div>
-        {% endfor %}
-    {% endwith %}
 </div>
 
 <!-- Logo -->
@@ -75,11 +66,8 @@
     Made by Shaunak Mohotra
 </footer>
 
+<!-- Flash auto-hide -->
 <script>
-function toggleDrawer() {
-    document.getElementById("drawer").classList.toggle("open");
-}
-
 setTimeout(() => {
     document.querySelectorAll('.auto-hide').forEach(msg => {
         msg.style.opacity = '0';
