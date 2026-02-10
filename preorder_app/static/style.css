@@ -401,3 +401,9 @@ td form {
     opacity: 1;
     transition: opacity 0.5s ease;
 }
+
+
+
+* {
+    font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+}
