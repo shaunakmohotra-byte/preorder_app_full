@@ -1,26 +1,16 @@
 /* ================= Base ================= */
 body {
     margin: 0;
-    font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: "Inter", sans-serif;
     background-color: #f5f5f5;
     color: #282c3f;
-    line-height: 1.6;
 }
 
 /* ================= Container ================= */
 .container {
     max-width: 1100px;
     margin: 30px auto;
-    padding: 0 20px;
-    margin-left: 240px; /* space for desktop side nav */
-}
-
-/* Mobile container fix */
-@media (max-width: 768px) {
-    .container {
-        margin-left: 0;
-        padding: 0 12px;
-    }
+    padding: 0 16px;
 }
 
 /* ================= Drawer Sidebar ================= */
@@ -36,7 +26,6 @@ body {
     flex-direction: column;
     transition: left 0.3s ease;
     z-index: 1000;
-    box-shadow: 2px 0 12px rgba(0,0,0,0.2);
 }
 
 .drawer.open {
@@ -54,11 +43,9 @@ body {
 
 .drawer-header h2 {
     margin: 0;
-    font-size: 20px;
-    font-weight: 700;
 }
 
-/* Close button */
+/* Close */
 .close-btn {
     font-size: 28px;
     background: none;
@@ -77,16 +64,15 @@ body {
 .drawer-links a {
     color: #e5e7eb;
     text-decoration: none;
-    padding: 12px 14px;
+    padding: 12px;
     border-radius: 8px;
-    font-weight: 500;
 }
 
 .drawer-links a:hover {
     background: #374151;
 }
 
-/* Footer (Logout section) */
+/* Footer */
 .drawer-footer {
     margin-top: auto;
     padding: 16px;
@@ -96,207 +82,33 @@ body {
     gap: 10px;
 }
 
-.drawer-footer span {
-    font-size: 14px;
-    color: #cbd5f5;
-}
-
-/* Logout button */
 .logout-btn {
     background: #e23744;
     color: white;
     text-align: center;
     padding: 10px;
     border-radius: 8px;
-    font-weight: 600;
     text-decoration: none;
 }
 
-.logout-btn:hover {
-    background: #c62828;
-}
-
-/* ================= Drawer Button ================= */
+/* ================= Menu Button ================= */
 .menu-btn {
+    display: none;
     position: fixed;
-    top: 18px;
+    top: 16px;
     left: 16px;
     font-size: 22px;
     background: none;
     border: none;
     cursor: pointer;
     z-index: 1100;
-    color: #282c3f;
 }
 
-
-/* ================= Mobile Side Nav ================= */
-.menu-btn {
-    display: none;
-}
-
-.side-nav {
-    display: none;
-}
-
+/* Mobile only */
 @media (max-width: 768px) {
-
     .menu-btn {
         display: block;
-        position: fixed;
-        top: 18px;
-        left: 16px;
-        font-size: 22px;
-        background: none;
-        border: none;
-        cursor: pointer;
-        z-index: 1001;
-        color: #282c3f;
     }
-
-    .side-nav {
-        display: block;
-        height: 100%;
-        width: 260px;
-        position: fixed;
-        top: 0;
-        left: -260px;
-        background-color: white;
-        box-shadow: 2px 0 12px rgba(0,0,0,0.15);
-        padding-top: 60px;
-        transition: left 0.3s ease;
-        z-index: 1000;
-    }
-
-    .side-nav a {
-        display: block;
-        padding: 14px 20px;
-        text-decoration: none;
-        font-weight: 600;
-        color: #282c3f;
-        border-bottom: 1px solid #eee;
-    }
-
-    .side-nav a:hover {
-        background-color: #fdf2e9;
-        color: #fc8019;
-    }
-
-    .side-nav .close-btn {
-        position: absolute;
-        top: 12px;
-        right: 16px;
-        font-size: 28px;
-        border-bottom: none;
-    }
-}
-
-/* ================= Tables ================= */
-.table-wrapper {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-table {
-    width: 100%;
-    min-width: max-content;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-    margin-bottom: 30px;
-}
-
-table th {
-    background-color: #fdf2e9;
-    padding: 14px 16px;
-    font-weight: 700;
-    font-size: 14px;
-    text-align: left;
-}
-
-table td {
-    padding: 14px 16px;
-    font-size: 14px;
-    border-bottom: 1px solid #eee;
-}
-
-table tr:hover {
-    background-color: #fafafa;
-}
-
-table tr:last-child td {
-    border-bottom: none;
-}
-
-/* Mobile table scroll */
-@media (max-width: 768px) {
-    table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-        font-size: 13px;
-    }
-}
-
-/* ================= Buttons ================= */
-.btn,
-button {
-    background-color: #fc8019;
-    color: white;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-.btn:hover,
-button:hover {
-    background-color: #e96b10;
-}
-
-/* Delete buttons */
-table form button {
-    background-color: #e23744;
-}
-
-table form button:hover {
-    background-color: #c62828;
-}
-
-/* ================= Forms ================= */
-form {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-input {
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 14px;
-}
-
-input:focus {
-    outline: none;
-    border-color: #fc8019;
-    box-shadow: 0 0 5px rgba(252,128,25,0.4);
-}
-
-/* ================= Headings ================= */
-h1, h2, h3, h4 {
-    font-weight: 600;
-    margin-top: 30px;
-    margin-bottom: 15px;
 }
 
 /* ================= Logo ================= */
@@ -310,7 +122,7 @@ h1, h2, h3, h4 {
     height: 80px;
 }
 
-/* ================= Flash Messages ================= */
+/* ================= Flash ================= */
 #flash-messages {
     position: fixed;
     top: 20px;
@@ -319,20 +131,10 @@ h1, h2, h3, h4 {
 }
 
 .flash-msg {
-    background-color: #4caf50;
+    background: #4caf50;
     color: white;
-    padding: 15px 20px;
+    padding: 14px 18px;
     margin-bottom: 10px;
-    border-radius: 5px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    transition: opacity 0.5s ease;
-}
-
-/* Mobile flash fix */
-@media (max-width: 600px) {
-    #flash-messages {
-        left: 10px;
-        right: 10px;
-        top: 10px;
-    }
+    border-radius: 6px;
+    transition: opacity 0.5s;
 }
