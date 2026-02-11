@@ -7,37 +7,45 @@ body {
     line-height: 1.6;
 }
 
-/* ================= NAVBAR ================= */
+/* Navbar */
 .navbar {
-    background: white;
-    padding: 16px 28px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    padding: 12px 22px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
-.navbar h1 {
-    margin: 0;
-    font-size: 24px;
-    font-weight: 700;
-    color: #fc8019;
-}
-
-.navbar div {
+/* Left section */
+.nav-left {
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 10px;
 }
 
-.navbar a {
+/* Smaller logo */
+.nav-logo {
+    height: 28px;   /* reduced size */
+    width: auto;
+}
+
+/* Title styled with theme color */
+.nav-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fc8019;   /* same orange */
+}
+
+/* Links */
+.nav-links a {
+    margin-left: 18px;
     text-decoration: none;
     color: #282c3f;
     font-weight: 500;
-    font-size: 14px;
 }
 
-.navbar a:hover {
+.nav-links a:hover {
     color: #fc8019;
 }
 
