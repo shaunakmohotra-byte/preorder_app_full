@@ -54,15 +54,17 @@ body {
 }
 
 .nav-links a {
-    margin-left: 18px;
-    text-decoration: none;
-    color: var(--text-main);
-    font-weight: 500;
+    margin-left: 0;
 }
-
+.nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
 .nav-links a:hover {
     color: var(--primary);
 }
+
 
 
 /* ================= CONTAINER ================= */
@@ -78,7 +80,7 @@ body {
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
 }
 
@@ -86,11 +88,12 @@ body {
 /* ================= CARDS ================= */
 
 .card {
-    background: var(--card-bg);
-    border-radius: 14px;
-    padding: 18px;
-    box-shadow: var(--shadow-soft);
-    transition: transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.card button {
+    width: 100%;
 }
 
 .card:hover {
@@ -261,6 +264,13 @@ form.inline input[type="number"] {
     gap: 6px;
 }
 
+.card form {
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
 .menu-form button {
     padding: 6px 10px;
     font-size: 13px;
@@ -321,9 +331,10 @@ form.inline input[type="number"] {
     }
 
     .grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 22px;
+    }    
 
     button,
     .btn {
@@ -365,5 +376,8 @@ form.inline input[type="number"] {
         text-align: center;
         font-size: 14px;
     }
-
+    .nav-links {
+    width: 100%;
+    justify-content: space-between;
+}
 }
