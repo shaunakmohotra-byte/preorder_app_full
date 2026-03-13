@@ -89,7 +89,7 @@ body {
 
 table {
     width: 100%;
-    min-width: max-content;
+    min-width:600px;
     border-collapse: collapse;
     background: white;
     border-radius: 14px;
