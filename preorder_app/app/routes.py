@@ -257,7 +257,8 @@ def pay_now():
     order_id = str(uuid.uuid4())[:8]
 
     # -------- SAVE ORDER ----------
-   orders = load_json(ORDERS_FILE, [])
+
+orders = load_json(ORDERS_FILE, [])
 
 # Generate token number
 token_number = len(orders) + 1
