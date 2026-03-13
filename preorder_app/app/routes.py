@@ -257,21 +257,21 @@ def pay_now():
     order_id = str(uuid.uuid4())[:8]
 
     # -------- SAVE ORDER ----------
+    orders = load_json(ORDERS_FILE, [])
 
-orders = load_json(ORDERS_FILE, [])
+    # Generate token number
+    token_number = len(orders) + 1
 
-# Generate token number
-token_number = len(orders) + 1
+    orders.append({
+        "id": order_id,
+        "token": token_number,
+        "user_name": user.get("username") or user.get("email"),
+        "items": order_items,
+        "total": total,
+        "status": "Paid",
+        "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    })
 
-orders.append({
-    "id": order_id,
-    "token": token_number,
-    "user_name": user.get("username") or user.get("email"),
-    "items": order_items,
-    "total": total,
-    "status": "Paid",
-    "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-})
     save_json(ORDERS_FILE, orders)
 
     # -------- CLEAR CART ----------
@@ -291,13 +291,6 @@ orders.append({
         as_attachment=True,
         download_name=f"invoice_{order_id}.pdf"
     )
-
-    # ⏩ Auto redirect to menu after 2 seconds
-    response.headers["Refresh"] = "2; url=" + url_for("main.menu")
-
-    flash("Payment successful! Invoice downloaded.")
-
-    return response
 
 @bp.route('/cafeteria')
 def cafeteria():
