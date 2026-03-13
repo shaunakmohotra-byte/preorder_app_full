@@ -300,7 +300,7 @@ form.inline input[type="number"] {
 }
 /* ================= MENU PAGE SMALL FORM ================= */
 .menu-form {
-    padding: 10px;        /* half of 20px */
+    padding: 6px;        /* half of 20px */
     gap: 12px;             /* half of 12px */
 }
 
