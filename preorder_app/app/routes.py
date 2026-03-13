@@ -259,7 +259,10 @@ def pay_now():
     # -------- SAVE ORDER ----------
     orders = load_json(ORDERS_FILE, [])
 
-    # Generate token number
+    # 🔧 FIX: ensure orders is a list
+    if not isinstance(orders, list):
+        orders = []
+
     token_number = len(orders) + 1
 
     orders.append({
