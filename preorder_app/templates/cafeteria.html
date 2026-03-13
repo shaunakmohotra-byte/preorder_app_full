@@ -118,4 +118,9 @@ Mark Delivered
 <p>No orders yet.</p>
 
 {% endif %}
+<script>
+setTimeout(function(){
+    window.location.reload();
+}, 120000);  // 120000 ms = 2 minutes
+</script>
 {% endblock %}
