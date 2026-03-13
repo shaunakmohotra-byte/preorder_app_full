@@ -4,6 +4,10 @@
 
 <h2>Cafeteria - All Orders</h2>
 
+<p style="color:gray; font-size:14px;">
+Dashboard auto-refreshes every 2 minutes.
+</p>
+
 {% if orders and orders|length > 0 %}
 
 <div class="table-wrapper">
@@ -43,13 +47,11 @@
 </td>
 
 <td>
-
 <ul style="margin:0; padding-left:18px;">
 {% for it in o['items'] %}
 <li>{{ it['qty'] }} × {{ it['name'] }}</li>
 {% endfor %}
 </ul>
-
 </td>
 
 <td>
@@ -118,9 +120,11 @@ Mark Delivered
 <p>No orders yet.</p>
 
 {% endif %}
+
 <script>
 setTimeout(function(){
     window.location.reload();
-}, 120000);  // 120000 ms = 2 minutes
+}, 120000);
 </script>
+
 {% endblock %}
