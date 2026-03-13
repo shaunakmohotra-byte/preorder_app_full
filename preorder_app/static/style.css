@@ -16,6 +16,7 @@
 
 
 /* ================= BASE ================= */
+
 body {
     margin: 0;
     font-family: 'Rajdhani', sans-serif;
@@ -44,7 +45,6 @@ body {
 
 .nav-logo {
     height: 56px;
-    width: auto;
 }
 
 .nav-title {
@@ -53,24 +53,27 @@ body {
     color: var(--primary);
 }
 
-.nav-links a {
-    margin-left: 0;
-}
 .nav-links {
     display: flex;
     flex-wrap: wrap;
-    gap: 14px;
+    gap: 16px;
 }
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-main);
+    font-weight: 500;
+}
+
 .nav-links a:hover {
     color: var(--primary);
 }
 
 
-
 /* ================= CONTAINER ================= */
 
 .container {
-    max-width: min(1100px,92vw);
+    max-width: min(1100px, 92vw);
     margin: 30px auto;
     padding: 0 20px;
 }
@@ -80,20 +83,24 @@ body {
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 22px;
 }
 
 
 /* ================= CARDS ================= */
 
 .card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: var(--shadow-soft);
+
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
-.card button {
-    width: 100%;
+
+    transition: transform 0.2s ease;
 }
 
 .card:hover {
@@ -105,13 +112,16 @@ body {
     margin-top: 8px;
 }
 
+.card button {
+    width: 100%;
+}
+
 
 /* ================= TABLES ================= */
 
 .table-wrapper {
     width: 100%;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
 }
 
 table {
@@ -188,6 +198,7 @@ form {
     border-radius: 14px;
     box-shadow: var(--shadow-soft);
     margin-bottom: 20px;
+
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -197,7 +208,6 @@ input[type="text"],
 input[type="number"],
 input[type="email"],
 input[type="password"] {
-
     padding: 10px 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -221,6 +231,16 @@ form.inline {
 
 form.inline input[type="number"] {
     width: 60px;
+}
+
+
+/* ================= MENU CARD FORM FIX ================= */
+
+.card form {
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+    margin-top: 10px;
 }
 
 
@@ -252,33 +272,6 @@ form.inline input[type="number"] {
     padding: 14px 18px;
     margin-bottom: 10px;
     border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    transition: opacity 0.5s ease;
-}
-
-
-/* ================= MENU SMALL FORM ================= */
-
-.menu-form {
-    padding: 6px;
-    gap: 6px;
-}
-
-.card form {
-    background: transparent;
-    box-shadow: none;
-    padding: 0;
-    margin-top: 10px;
-}
-
-.menu-form button {
-    padding: 6px 10px;
-    font-size: 13px;
-}
-
-.menu-form input {
-    padding: 6px 8px;
-    font-size: 13px;
 }
 
 
@@ -330,11 +323,10 @@ form.inline input[type="number"] {
         gap: 10px;
     }
 
-    .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 22px;
-    }    
+    .nav-links {
+        width: 100%;
+        justify-content: space-between;
+    }
 
     button,
     .btn {
@@ -358,7 +350,6 @@ form.inline input[type="number"] {
         overflow-x: auto;
         white-space: nowrap;
     }
-
 }
 
 
@@ -376,8 +367,5 @@ form.inline input[type="number"] {
         text-align: center;
         font-size: 14px;
     }
-    .nav-links {
-    width: 100%;
-    justify-content: space-between;
-}
+
 }
